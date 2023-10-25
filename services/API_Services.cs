@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Hosting;
+using System.Diagnostics;
 using System.Net.Http.Json;
 using System.Text.Json;
 using webAPIMiniReddit.Model;
@@ -66,27 +67,40 @@ namespace webAPIMiniReddit.Services
         public void SeedData()
         {
 
+            
             Traad traad = _dc.Traade.FirstOrDefault()!;
             if (traad == null)
             {
-                traad = new Traad { titel = "Yo", beskrivelse = "hfiefjo" };
+                traad = new Traad {id = 0, titel = "Yo", beskrivelse = "hfiefjo" };
                 _dc.Traade.Add(traad);
-                _dc.Traade.Add(new Traad { titel = "Satoshi", beskrivelse = "hfiefhoei" });
-                _dc.Traade.Add(new Traad { titel = "Wassup", beskrivelse = "jopfjp" });
+                _dc.Traade.Add(new Traad { id = 1, titel = "Satoshi", beskrivelse = "hfiefhoei" });
+                _dc.Traade.Add(new Traad { id = 2, titel = "Wassup", beskrivelse = "jopfjp" });
 
-                traad.Kommentarer = _dc.Traade.Kommentarer.FirstOrDefault()!;
-                if (traad.Kommentarer == null)
+                int idTraad = 0;
+                foreach (Traad s in _dc.Traade)
                 {
-                    _dc.Traade.Kommentarer.Add(new Traad.Kommentar { text = "Bro, who is Satoshi", brugerKommentar = "Nakamigo" });
-                    _dc.Traade.Kommentarer.Add(new Kommentar { text = "What is Bitcoin?", brugerKommentar = "WakawakaEH-EH"  });
-                    _dc.Traade.Kommentarer.Add(new Kommentar { text = "Do you think Satoshi is Elon?", brugerKommentar = "SHAMINAMINA-EH-EH" });
+                     
+                    addSeedDataKommentarer(idTraad);
+                    idTraad++;
                 }
+
             }
-
-            
             _dc.SaveChanges();
-        
+        }
 
+
+
+        public void addSeedDataKommentarer(int idTraad)
+        {
+            
+            Traad traad = _dc.Traade.FirstOrDefault(t => t.id == idTraad);
+            Kommentar kommentar = new Kommentar
+            {
+                brugerKommentar = "brugerKommentar",
+                text = "text",
+                dato = DateTime.Now
+            };
+            traad.Kommentarer.Add(kommentar);
         }
     }
 }
