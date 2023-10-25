@@ -19,13 +19,13 @@ namespace webAPIMiniReddit.Services
         }
 
         //Hent tråde
-        public async Task<Traad[]> GetPosts(int id, string brugerTraad, string titel, string beskrivelse)
+        public async Task<Traad[]> hentTraade()
         {
             return _dc.Traade.ToArray();
         }
 
         //Opret tråde
-        public async Task<Traad> CreatePost(int id, string brugerTraad, string titel, string beskrivelse)
+        public async Task<Traad> opretTraad(int id, string brugerTraad, string titel, string beskrivelse)
         {
             _dc.Traade.Add(new Traad()
             {
@@ -41,23 +41,26 @@ namespace webAPIMiniReddit.Services
 
 
         //Opret kommentar
-        public async Task<Kommentar> CreateComment(string text, int idKommentar, string brugerKommentar)
+        public async Task<Kommentar> opretKommentar(string text, int idTraad, string brugerKommentar)
         {
-            _dc.Kommentare.Add(new Kommentar()
+            Traad traad = _dc.Traade.FirstOrDefault (t  => t.id == idTraad);
+            Kommentar kommentar = new Kommentar
             {
-                idKommentar = idKommentar,
                 brugerKommentar = brugerKommentar,
                 text = text,
                 dato = DateTime.Now
-            });
+            };
+            traad.Kommentarer.Add(kommentar);
             _dc.SaveChanges();
-            return (await _dc.Kommentare.FindAsync(idKommentar))!;
+            return kommentar;
         }
 
 
-        public async Task<Kommentar[]> GetComment(string text, int idKommentar, string brugerKommentar)
+        //Hent kommentar
+        public async Task<Kommentar[]> hentKommentarer(int idTraad)
         {
-            return _dc.Kommentare.ToArray();
+            Traad traad = _dc.Traade.FirstOrDefault(t => t.id == idTraad);
+            return traad.Kommentarer.ToArray();
         }
 
         public void SeedData()
@@ -70,15 +73,16 @@ namespace webAPIMiniReddit.Services
                 _dc.Traade.Add(traad);
                 _dc.Traade.Add(new Traad { titel = "Satoshi", beskrivelse = "hfiefhoei" });
                 _dc.Traade.Add(new Traad { titel = "Wassup", beskrivelse = "jopfjp" });
+
+                traad.Kommentarer = _dc.Traade.Kommentarer.FirstOrDefault()!;
+                if (traad.Kommentarer == null)
+                {
+                    _dc.Traade.Kommentarer.Add(new Traad.Kommentar { text = "Bro, who is Satoshi", brugerKommentar = "Nakamigo" });
+                    _dc.Traade.Kommentarer.Add(new Kommentar { text = "What is Bitcoin?", brugerKommentar = "WakawakaEH-EH"  });
+                    _dc.Traade.Kommentarer.Add(new Kommentar { text = "Do you think Satoshi is Elon?", brugerKommentar = "SHAMINAMINA-EH-EH" });
+                }
             }
 
-            Kommentar kommentar = _dc.Kommentare.FirstOrDefault()!;
-            if (kommentar == null)
-            {
-                _dc.Kommentare.Add(new Kommentar { text = "Bro, who is Satoshi", brugerKommentar = "Nakamigo" });
-                _dc.Kommentare.Add(new Kommentar { text = "What is Bitcoin?", brugerKommentar = "WakawakaEH-EH" });
-                _dc.Kommentare.Add(new Kommentar { text = "Do you think Satoshi is Elon?", brugerKommentar = "SHAMINAMINA-EH-EH" });
-            }
             
             _dc.SaveChanges();
         

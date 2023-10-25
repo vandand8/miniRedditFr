@@ -5,7 +5,6 @@ namespace webAPIMiniReddit.Model
     public class DataContext : DbContext
     {
         public DbSet<Traad> Traade { get; set; }
-        public DbSet<Kommentar> Kommentare { get; set; }
 
         public string DbPath { get; set; }
         public DataContext()

@@ -43,14 +43,14 @@ app.UseHttpsRedirection();
 //string text, int idKommentar, string brugerKommentar
 
 
-app.MapGet("/api/Traad/", (Api_Service service, int id, string brugerTraad, string titel, string beskrivelse) =>
+app.MapGet("/api/Traad/", (Api_Service service) =>
 {
-    return service.GetPosts(id, brugerTraad, titel, beskrivelse);
+    return service.hentTraade();
 });
 
 app.MapPost("/api/Traad/", (Api_Service service, int id, string brugerTraad, string titel, string beskrivelse) =>
 {
-    return service.CreatePost(id, brugerTraad, titel, beskrivelse);
+    return service.opretTraad(id, brugerTraad, titel, beskrivelse);
 });
 
 
@@ -59,19 +59,20 @@ app.MapPost("/api/Traad/", (Api_Service service, int id, string brugerTraad, str
 
 app.MapPost("/api/Traad/{idKommentar}", (Api_Service service, string text, int idKommentar, string brugerKommentar) =>
 {
-    return service.CreateComment(text, idKommentar, brugerKommentar);
+    return service.opretKommentar(text, idKommentar, brugerKommentar);
 });
 
-app.MapGet("/api/Traad/{idKommentar}", (Api_Service service, string text, int idKommentar, string brugerKommentar) =>
+app.MapGet("/api/Traad/{idKommentar}", (Api_Service service, ) =>
 {
-    return service.GetComment(text, idKommentar, brugerKommentar);
+    return service.hentKommentarer();
 });
 
 
-app.MapPut("/api/Traad/", (Api_Service service, int totalStemmer) =>
+/*app.MapPut("/api/Traad/{id}", (Api_Service service, int totalStemmer) =>
 {
-    return servive.GetStemmer(totalStemmer);
+    return service.GetStemmer(totalStemmer);
 }
+*/
 
 // Seed data hvis nødvendigt.
 using (var scope = app.Services.CreateScope())

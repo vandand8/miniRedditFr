@@ -6,6 +6,7 @@ namespace webAPIMiniReddit.Model
     {
         [Key]
         public int id { get; set; }
+        public List <Kommentar> Kommentarer { get; set; } = new List<Kommentar> ();
         public string ? brugerTraad { get; set; }
         public DateTime date { get; set; }
         public string titel { get; set; }
