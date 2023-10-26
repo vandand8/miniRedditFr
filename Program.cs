@@ -74,9 +74,9 @@ app.MapPost("/api/Traad/{idKommentar}", (Api_Service service, string text, int i
     return service.opretKommentar(text, idKommentar, brugerKommentar);
 });
 
-app.MapGet("/api/Traad/{idKommentar}", (Api_Service service) =>
+app.MapGet("/api/Traad/{idKommentar}", (Api_Service service, int idTraad) =>
 {
-    return service.hentKommentarer();
+    return service.hentKommentarer(idTraad);
 });
 
 
@@ -93,6 +93,7 @@ app.MapPut("/api/Traad/{idKommentar}/TotalStemmerK", async (Api_Service service,
         return Results.NotFound("Kommentaren blev ikke fundet.");
     }
 });
+
 
 
 

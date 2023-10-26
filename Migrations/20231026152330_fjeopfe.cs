@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace webAPIMiniReddit.Migrations
 {
     /// <inheritdoc />
-    public partial class jioepfjop : Migration
+    public partial class fjeopfe : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

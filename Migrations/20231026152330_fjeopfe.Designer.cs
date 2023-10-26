@@ -11,8 +11,8 @@ using webAPIMiniReddit.Model;
 namespace webAPIMiniReddit.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231026085806_jioepfjop")]
-    partial class jioepfjop
+    [Migration("20231026152330_fjeopfe")]
+    partial class fjeopfe
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -78,6 +78,7 @@ namespace webAPIMiniReddit.Services
             return traad.Kommentarer.ToArray();
         }
 
+
         //Ændr total antal stemmer for kommentar
         public async Task<int> OpdaterTotalStemmer(int idKommentar, int totalStemmerK)
         {
@@ -99,10 +100,10 @@ namespace webAPIMiniReddit.Services
             Traad traad = _dc.Traade.FirstOrDefault()!;
             if (traad == null)
             {
-                traad = new Traad { titel = "Yo", beskrivelse = "hfiefjo" };
+                traad = new Traad { id = 1, titel = "Yo", beskrivelse = "hfiefjo" };
                 _dc.Traade.Add(traad);
-                _dc.Traade.Add(new Traad { titel = "Satoshi", beskrivelse = "hfiefhoei" });
-                _dc.Traade.Add(new Traad { titel = "Wassup", beskrivelse = "jopfjp" });
+                _dc.Traade.Add(new Traad { id = 2, titel = "Satoshi", beskrivelse = "hfiefhoei" });
+                _dc.Traade.Add(new Traad { id = 3, titel = "Wassup", beskrivelse = "jopfjp" });
 
                 Kommentar kommentar = new Kommentar
                 {
@@ -122,28 +123,20 @@ namespace webAPIMiniReddit.Services
                 traad.Kommentarer.Add(kommentar1);
             }
             _dc.SaveChanges();
-        }
-        internal object hentKommentarer()
-        {
-            throw new NotImplementedException();
-        }
-    }
 
-        /*public Kommentar addSeedDataKommentarer(int idTraad)
-        {
-            
-            Traad traad = _dc.Traade.FirstOrDefault(t => t.id == idTraad);
-            Kommentar kommentar = new Kommentar
+            public async Task<Kommentar> opretKommentar(string text, int idTraad, string brugerKommentar)
             {
-                brugerKommentar = "brugerKommentar",
-                text = "text",
-                dato = DateTime.Now
-            };
-            traad.Kommentarer.Add(kommentar);
-            
-            _dc.SaveChanges();
-            return kommentar;
+                Traad traad = _dc.Traade.FirstOrDefault(t => t.id == idTraad)!;
+                Kommentar kommentar = new Kommentar
+                {
+                    brugerKommentar = brugerKommentar,
+                    text = text,
+                    dato = DateTime.Now
+                };
+                traad.Kommentarer.Add(kommentar);
+                _dc.SaveChanges();
+                return kommentar;
+            }
         }
-        */
-       
     }
+ }
