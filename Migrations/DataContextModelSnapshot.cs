@@ -23,6 +23,9 @@ namespace webAPIMiniReddit.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("Traadid")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("brugerKommentar")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -30,11 +33,22 @@ namespace webAPIMiniReddit.Migrations
                     b.Property<DateTime>("dato")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("stemNedK")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("stemOpK")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("text")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("totalStemmerK")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("idKommentar");
+
+                    b.HasIndex("Traadid");
 
                     b.ToTable("Kommentare", (string)null);
                 });
@@ -74,6 +88,18 @@ namespace webAPIMiniReddit.Migrations
                     b.HasKey("id");
 
                     b.ToTable("Traade", (string)null);
+                });
+
+            modelBuilder.Entity("webAPIMiniReddit.Model.Kommentar", b =>
+                {
+                    b.HasOne("webAPIMiniReddit.Model.Traad", null)
+                        .WithMany("Kommentarer")
+                        .HasForeignKey("Traadid");
+                });
+
+            modelBuilder.Entity("webAPIMiniReddit.Model.Traad", b =>
+                {
+                    b.Navigation("Kommentarer");
                 });
 #pragma warning restore 612, 618
         }

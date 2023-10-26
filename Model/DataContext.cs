@@ -6,11 +6,14 @@ namespace webAPIMiniReddit.Model
     {
         public DbSet<Traad> Traade { get; set; }
 
+        public DbSet<Kommentar> Kommentarer { get; set; }
         public string DbPath { get; set; }
         public DataContext()
         {
             DbPath = "bin/miniReddit.db";
         }
+
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         => options.UseSqlite($"DataSource={DbPath}");

@@ -9,11 +9,11 @@ namespace webAPIMiniReddit.Model
         public string brugerKommentar { get; set; }
         public string text { get; set; }
 
-        /*public int stemOpK { get; set; } = 0;
+        public int stemOpK { get; set; } = 0;
         public int stemNedK { get; set; } = 0;
 
         public int totalStemmerK { get; set; } = 0;
-        */
+        
         public DateTime dato { get; set; }
 
     }

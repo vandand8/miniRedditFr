@@ -53,6 +53,18 @@ app.MapPost("/api/Traad/", (Api_Service service, int id, string brugerTraad, str
     return service.opretTraad(id, brugerTraad, titel, beskrivelse);
 });
 
+app.MapPut("/api/Traad/{id}TotalStemmer", async (Api_Service service, int id, int totalStemmer) =>
+{
+    int updatedTotalStemmerT = await service.OpdaterTotalStemmer(id, totalStemmer);
+    if (updatedTotalStemmerT >= 0)
+    {
+        return Results.Ok(updatedTotalStemmerT);
+    }
+    else
+    {
+        return Results.NotFound("Tråden blev ikke fundet.");
+    }
+});
 
 
 
@@ -62,17 +74,27 @@ app.MapPost("/api/Traad/{idKommentar}", (Api_Service service, string text, int i
     return service.opretKommentar(text, idKommentar, brugerKommentar);
 });
 
-app.MapGet("/api/Traad/{idKommentar}", (Api_Service service, ) =>
+app.MapGet("/api/Traad/{idKommentar}", (Api_Service service) =>
 {
     return service.hentKommentarer();
 });
 
 
-/*app.MapPut("/api/Traad/{id}", (Api_Service service, int totalStemmer) =>
+
+app.MapPut("/api/Traad/{idKommentar}/TotalStemmerK", async (Api_Service service, int idKommentar, int totalStemmerK) =>
 {
-    return service.GetStemmer(totalStemmer);
-}
-*/
+    int updatedTotalStemmer = await service.OpdaterTotalStemmer(idKommentar, totalStemmerK);
+    if (updatedTotalStemmer >= 0)
+    {
+        return Results.Ok(updatedTotalStemmer);
+    }
+    else
+    {
+        return Results.NotFound("Kommentaren blev ikke fundet.");
+    }
+});
+
+
 
 // Seed data hvis nødvendigt.
 using (var scope = app.Services.CreateScope())

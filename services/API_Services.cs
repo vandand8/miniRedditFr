@@ -40,6 +40,21 @@ namespace webAPIMiniReddit.Services
             return (await _dc.Traade.FindAsync(id))!;
         }
 
+        //Ændr total antal stemmer for tråd
+        public async Task<int> OpdaterTotalStemmerT(int id, int totalStemmer)
+        {
+            Traad traadTS = _dc.Traade.FirstOrDefault(t => t.id == id);
+
+            if (traadTS.totalStemmer != null)
+            {
+                traadTS.totalStemmer = totalStemmer;
+                _dc.SaveChanges();
+                return totalStemmer;
+            }
+
+            return -1; // Returner en negativ værdi for at angive, at tråden ikke blev fundet.
+        }
+
 
         //Opret kommentar
         public async Task<Kommentar> opretKommentar(string text, int idTraad, string brugerKommentar)
@@ -56,7 +71,6 @@ namespace webAPIMiniReddit.Services
             return kommentar;
         }
 
-
         //Hent kommentar
         public async Task<Kommentar[]> hentKommentarer(int idTraad)
         {
@@ -64,33 +78,58 @@ namespace webAPIMiniReddit.Services
             return traad.Kommentarer.ToArray();
         }
 
-        public void SeedData()
+        //Ændr total antal stemmer for kommentar
+        public async Task<int> OpdaterTotalStemmer(int idKommentar, int totalStemmerK)
         {
+            Kommentar kommentar = _dc.Kommentarer.FirstOrDefault(k => k.idKommentar == idKommentar);
 
-            
-            Traad traad = _dc.Traade.FirstOrDefault()!;
-            if (traad == null)
+            if (kommentar != null)
             {
-                traad = new Traad {id = 0, titel = "Yo", beskrivelse = "hfiefjo" };
-                _dc.Traade.Add(traad);
-                _dc.Traade.Add(new Traad { id = 1, titel = "Satoshi", beskrivelse = "hfiefhoei" });
-                _dc.Traade.Add(new Traad { id = 2, titel = "Wassup", beskrivelse = "jopfjp" });
-
-                int idTraad = 0;
-                foreach (Traad s in _dc.Traade)
-                {
-                     
-                    addSeedDataKommentarer(idTraad);
-                    idTraad++;
-                }
-
+                kommentar.totalStemmerK = totalStemmerK;
+                _dc.SaveChanges();
+                return totalStemmerK;
             }
-            _dc.SaveChanges();
+
+            return -1; // Returner en negativ værdi for at angive, at kommentaren ikke blev fundet.
         }
 
 
+        public void SeedData()
+        {
+            Traad traad = _dc.Traade.FirstOrDefault()!;
+            if (traad == null)
+            {
+                traad = new Traad { titel = "Yo", beskrivelse = "hfiefjo" };
+                _dc.Traade.Add(traad);
+                _dc.Traade.Add(new Traad { titel = "Satoshi", beskrivelse = "hfiefhoei" });
+                _dc.Traade.Add(new Traad { titel = "Wassup", beskrivelse = "jopfjp" });
 
-        public void addSeedDataKommentarer(int idTraad)
+                Kommentar kommentar = new Kommentar
+                {
+                    brugerKommentar = "Jamie",
+                    text = "Hej med dig",
+                    idKommentar = 1,
+                    dato = DateTime.Now
+                };
+                traad.Kommentarer.Add(kommentar);
+                Kommentar kommentar1 = new Kommentar
+                {
+                    brugerKommentar = "varnan",
+                    text = "hej!",
+                    idKommentar = 2,
+                    dato = DateTime.Now
+                };
+                traad.Kommentarer.Add(kommentar1);
+            }
+            _dc.SaveChanges();
+        }
+        internal object hentKommentarer()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+        /*public Kommentar addSeedDataKommentarer(int idTraad)
         {
             
             Traad traad = _dc.Traade.FirstOrDefault(t => t.id == idTraad);
@@ -101,6 +140,10 @@ namespace webAPIMiniReddit.Services
                 dato = DateTime.Now
             };
             traad.Kommentarer.Add(kommentar);
+            
+            _dc.SaveChanges();
+            return kommentar;
         }
+        */
+       
     }
-}
