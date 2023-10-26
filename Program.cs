@@ -74,6 +74,11 @@ app.MapPost("/api/Traad/{idKommentar}", (Api_Service service, string text, int i
     return service.opretKommentar(text, idKommentar, brugerKommentar);
 });
 
+app.MapPost("/api/Traad/{idTraad}", (Api_Service service, string text, int idTraad, string brugerKommentar) =>
+{
+    return service.opretKommentar(text, idTraad, brugerKommentar);
+});
+
 app.MapGet("/api/Traad/{idKommentar}", (Api_Service service, int idTraad) =>
 {
     return service.hentKommentarer(idTraad);

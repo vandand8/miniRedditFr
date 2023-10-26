@@ -59,7 +59,7 @@ namespace webAPIMiniReddit.Services
         //Opret kommentar
         public async Task<Kommentar> opretKommentar(string text, int idTraad, string brugerKommentar)
         {
-            Traad traad = _dc.Traade.FirstOrDefault (t  => t.id == idTraad);
+            Traad traad = _dc.Traade.FirstOrDefault(t => t.id == idTraad)!;
             Kommentar kommentar = new Kommentar
             {
                 brugerKommentar = brugerKommentar,
@@ -123,20 +123,6 @@ namespace webAPIMiniReddit.Services
                 traad.Kommentarer.Add(kommentar1);
             }
             _dc.SaveChanges();
-
-            public async Task<Kommentar> opretKommentar(string text, int idTraad, string brugerKommentar)
-            {
-                Traad traad = _dc.Traade.FirstOrDefault(t => t.id == idTraad)!;
-                Kommentar kommentar = new Kommentar
-                {
-                    brugerKommentar = brugerKommentar,
-                    text = text,
-                    dato = DateTime.Now
-                };
-                traad.Kommentarer.Add(kommentar);
-                _dc.SaveChanges();
-                return kommentar;
-            }
         }
     }
  }
